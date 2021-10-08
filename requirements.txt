@@ -1,0 +1,6 @@
+django
+django-rest-framework
+flake8
+psycopg2
+Pillow
+python-dotenv
