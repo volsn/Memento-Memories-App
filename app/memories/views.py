@@ -1,3 +1,4 @@
+from django.utils.translation import gettext as _
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets, mixins, status
@@ -9,18 +10,19 @@ from memories import serializers
 
 
 class BaseViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
-                  mixins.CreateModelMixin):
+                  mixins.CreateModelMixin, mixins.RetrieveModelMixin,
+                  mixins.UpdateModelMixin, mixins.DestroyModelMixin):
     """Base viewset for user owned memories attributes"""
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         """Return objects for the current authenticated user only"""
-        assigned_only = bool(
-            int(self.request.query_params.get('assigned_only', 0))
+        in_use = bool(
+            int(self.request.query_params.get('in_use', 0))
         )
         queryset = self.queryset
-        if assigned_only:
+        if in_use:
             queryset = queryset.filter(memory__isnull=False)
 
         return queryset.filter(
@@ -30,6 +32,13 @@ class BaseViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
     def perform_create(self, serializer):
         """Create a new object"""
         serializer.save(user=self.request.user)
+
+    def delete(self, request, *args, **kwargs):
+        """Override delete method to return message response"""
+        self.destroy(request, *args, **kwargs)
+        return Response({'message': _('Item successfully deleted')},
+                        status=status.HTTP_204_NO_CONTENT)
+
 
 
 class TagViewSet(BaseViewSet):
@@ -45,7 +54,7 @@ class DomainViewSet(BaseViewSet):
 
 
 class MemoryViewSet(viewsets.ModelViewSet):
-    """Manage memorys in the database"""
+    """Manage memories in the database"""
     serializer_class = serializers.MemorySerializer
     queryset = Memory.objects.all()
     authentication_classes = (TokenAuthentication,)
@@ -105,3 +114,9 @@ class MemoryViewSet(viewsets.ModelViewSet):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
+
+    def delete(self, request, *args, **kwargs):
+        """Override delete method to return message response"""
+        self.destroy(request, *args, **kwargs)
+        return Response({'message': _('Memory successfully deleted')},
+                        status=status.HTTP_204_NO_CONTENT)

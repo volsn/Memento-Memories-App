@@ -1,5 +1,6 @@
-import uuid
 import os
+import uuid
+from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
@@ -41,6 +42,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    memory_expiration = models.DurationField(default=timedelta(weeks=1))
 
     objects = UserManager()
 
@@ -71,6 +73,14 @@ class Tag(models.Model):
         return self.name
 
 
+class MemoryManager(models.Manager):
+    """Override model manager for memory class"""
+    def get_queryset(self):
+        """Only return memories that have not expired"""
+        return super(MemoryManager, self).get_queryset()\
+            .filter(expiration__gt=datetime.now())
+
+
 class Memory(models.Model):
     """Recipe object"""
     user = models.ForeignKey(
@@ -78,7 +88,8 @@ class Memory(models.Model):
         on_delete=models.CASCADE
     )
     title = models.CharField(max_length=255)
-    text = models.TextField()
+    text = models.TextField(blank=True)
+    expiration = models.DateTimeField(editable=False)
     domains = models.ManyToManyField('Domain')
     tags = models.ManyToManyField('Tag')
     image = models.ImageField(
@@ -86,5 +97,12 @@ class Memory(models.Model):
         upload_to=recipe_image_file_path
     )
 
+    objects = MemoryManager()
+
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs) -> None:
+        """Override save method to add expiration datetime to object"""
+        self.expiration = datetime.now() + self.user.memory_expiration
+        super(Memory, self).save(*args, **kwargs)

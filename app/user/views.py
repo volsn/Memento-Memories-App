@@ -1,6 +1,8 @@
-from rest_framework import generics, authentication, permissions
+from rest_framework import generics, authentication, permissions, status
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.mixins import UpdateModelMixin
 from rest_framework.settings import api_settings
+from rest_framework.response import Response
 
 from user.serializers import UserSerializer, AuthTokenSerializer
 
@@ -16,7 +18,7 @@ class CreateTokenView(ObtainAuthToken):
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
 
 
-class ManageUserView(generics.RetrieveUpdateDestroyAPIView):
+class ManageUserView(generics.RetrieveUpdateDestroyAPIView, UpdateModelMixin):
     """Manage the authenticated user"""
     serializer_class = UserSerializer
     authentication_classes = (authentication.TokenAuthentication,)
@@ -25,3 +27,13 @@ class ManageUserView(generics.RetrieveUpdateDestroyAPIView):
     def get_object(self):
         """Retrieve and return authentication user"""
         return self.request.user
+
+    def patch(self, request, *args, **kwargs):
+        """Partial update of user"""
+        return self.partial_update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        """Override delete method to return message response"""
+        self.destroy(request, *args, **kwargs)
+        return Response({'message': 'User successfully deleted'},
+                        status=status.HTTP_204_NO_CONTENT)
