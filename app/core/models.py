@@ -77,8 +77,13 @@ class MemoryManager(models.Manager):
     """Override model manager for memory class"""
     def get_queryset(self):
         """Only return memories that have not expired"""
-        return super(MemoryManager, self).get_queryset()\
-            .filter(expiration__gt=datetime.now())
+        return super(MemoryManager, self).get_queryset() \
+            .filter(expiration__gte=datetime.now())
+
+    def delete_expired_objects(self) -> None:
+        """Method to remove memories that have expired"""
+        return super(MemoryManager, self).get_queryset() \
+            .filter(expiration__lte=datetime.now()).delete()
 
 
 class Memory(models.Model):
