@@ -33,12 +33,12 @@ class BaseViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
         """Create a new object"""
         serializer.save(user=self.request.user)
 
-    def delete(self, request, *args, **kwargs):
-        """Override delete method to return message response"""
-        self.destroy(request, *args, **kwargs)
+    def destroy(self, request, *args, **kwargs):
+        """Override destroy method to return message response"""
+        instance: BaseViewSet = self.get_object()
+        self.perform_destroy(instance)
         return Response({'message': _('Item successfully deleted')},
                         status=status.HTTP_204_NO_CONTENT)
-
 
 
 class TagViewSet(BaseViewSet):
@@ -92,7 +92,7 @@ class MemoryViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Create a new memories"""
-        serializer.save(user=self.request.user)
+        serializer.save(user=self.request.user) 
 
     @action(methods=('POST',), detail=True, url_path='upload-image')
     def upload_image(self, request, pk=None):
@@ -115,8 +115,9 @@ class MemoryViewSet(viewsets.ModelViewSet):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    def delete(self, request, *args, **kwargs):
+    def destroy(self, request, *args, **kwargs):
         """Override delete method to return message response"""
-        self.destroy(request, *args, **kwargs)
+        instance: Memory = self.get_object()
+        self.perform_destroy(instance)
         return Response({'message': _('Memory successfully deleted')},
                         status=status.HTTP_204_NO_CONTENT)
