@@ -55,7 +55,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=255)),
                 ('text', models.TextField()),
-                ('image', models.ImageField(null=True, upload_to=core.models.recipe_image_file_path)),
+                ('image', models.ImageField(null=True, upload_to=core.models.image_upload_file_path)),
                 ('domains', models.ManyToManyField(to='core.Domain')),
                 ('tags', models.ManyToManyField(to='core.Tag')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),

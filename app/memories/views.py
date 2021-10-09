@@ -19,7 +19,7 @@ class BaseViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
     def get_queryset(self):
         """Return objects for the current authenticated user only"""
         in_use = bool(
-            int(self.request.query_params.get('in_use', 0))
+            int(self.request._params.get('in_use', 0))
         )
         queryset = self.queryset
         if in_use:

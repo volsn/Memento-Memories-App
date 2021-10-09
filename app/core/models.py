@@ -3,14 +3,15 @@ import uuid
 from datetime import datetime, timedelta
 
 from django.conf import settings
+from django.utils.timezone import make_aware
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
 from django.db import models
 
 
-def recipe_image_file_path(_, filename):
+def image_upload_file_path(_, filename):
     """Generate file path for new memory image"""
-    ext = filename.split('.')
+    ext = filename.split('.')[-1]
     filename = f'{uuid.uuid4()}.{ext}'
 
     return os.path.join('uploads', 'memories', filename)
@@ -75,6 +76,7 @@ class Tag(models.Model):
 
 class MemoryManager(models.Manager):
     """Override model manager for memory class"""
+
     def get_queryset(self):
         """Only return memories that have not expired"""
         return super(MemoryManager, self).get_queryset() \
@@ -99,7 +101,7 @@ class Memory(models.Model):
     tags = models.ManyToManyField('Tag')
     image = models.ImageField(
         null=True,
-        upload_to=recipe_image_file_path
+        upload_to=image_upload_file_path
     )
 
     objects = MemoryManager()
@@ -109,5 +111,6 @@ class Memory(models.Model):
 
     def save(self, *args, **kwargs) -> None:
         """Override save method to add expiration datetime to object"""
-        self.expiration = datetime.now() + self.user.memory_expiration
+        self.expiration = make_aware(datetime.now()) + \
+                          self.user.memory_expiration
         super(Memory, self).save(*args, **kwargs)

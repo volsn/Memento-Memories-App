@@ -52,35 +52,33 @@ class ModelTests(TestCase):
         """Test the tag string representation"""
         tag = models.Tag.objects.create(
             user=sample_user(),
-            name='Vegan'
+            name='Spot ideas'
         )
         self.assertEqual(str(tag), tag.name)
 
-    def test_ingredient_str(self):
-        """Test the ingredient test representation"""
-        ingredient = models.Ingredient.objects.create(
+    def test_domain_str(self):
+        """Test the domain test representation"""
+        domain = models.Domain.objects.create(
             user=sample_user(),
-            name='Cucumber'
+            name='Friendship'
         )
 
-        self.assertEqual(str(ingredient), ingredient.name)
+        self.assertEqual(str(domain), domain.name)
 
-    def test_recipe_str(self):
-        recipe = models.Recipe.objects.create(
+    def test_memory_str(self):
+        memory = models.Memory.objects.create(
             user=sample_user(),
-            title='Steak and mushroom sauce',
-            time_minutes=5,
-            price=5.00
+            title='Call Sam'
         )
 
-        self.assertEqual(str(recipe), recipe.title)
+        self.assertEqual(str(memory), memory.title)
 
     @patch('uuid.uuid4')
-    def test_recipe_file_name_uuid(self, mock_uuid):
+    def test_memory_file_name_uuid(self, mock_uuid):
         """Test that image is saved in the correct location"""
         uuid = 'test-uuid'
         mock_uuid.return_value = uuid
-        file_path = models.recipe_image_file_path(None, 'myimage.jpg')
+        file_path = models.image_upload_file_path(None, 'myimage.jpg')
 
-        exp_path = f'uploads/recipe/{uuid}.jpg'
+        exp_path = f'uploads/memories/{uuid}.jpg'
         self.assertRegex(file_path, exp_path)

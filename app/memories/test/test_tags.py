@@ -5,8 +5,8 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import Tag, Recipe
-from recipe.serializers import TagSerializer
+from core.models import Tag, Memory
+from memories.serializers import TagSerializer
 
 
 TAGS_URL = reverse('memories:tag-list')
@@ -37,8 +37,8 @@ class PrivateTagsApiTests(TestCase):
 
     def test_retrieve_tags(self):
         """Test retrieving tags"""
-        Tag.objects.create(user=self.user, name='Vegan')
-        Tag.objects.create(user=self.user, name='Dessert')
+        Tag.objects.create(user=self.user, name='Spot Idea')
+        Tag.objects.create(user=self.user, name='Plan')
 
         res = self.client.get(TAGS_URL)
 
@@ -53,8 +53,8 @@ class PrivateTagsApiTests(TestCase):
             email='other@mail.com',
             password='testpass'
         )
-        Tag.objects.create(user=user2, name='Fruity')
-        tag = Tag.objects.create(user=self.user, name='Comfort Food')
+        Tag.objects.create(user=user2, name='Spot Idea')
+        tag = Tag.objects.create(user=self.user, name='Roadmap')
 
         res = self.client.get(TAGS_URL)
 
@@ -80,19 +80,17 @@ class PrivateTagsApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_retrieve_tags_assigned_to_recipe(self):
+    def test_retrieve_tags_assigned_to_memory(self):
         """Test filtering tags by those assigned to memories"""
-        tag1 = Tag.objects.create(user=self.user, name='Breakfast')
-        tag2 = Tag.objects.create(user=self.user, name='Lunch')
-        recipe = Recipe.objects.create(
-            title='Coriander eggs on toast',
-            time_minutes=10,
-            price=5.00,
+        tag1 = Tag.objects.create(user=self.user, name='Spot Idea')
+        tag2 = Tag.objects.create(user=self.user, name='Plan')
+        memory = Memory.objects.create(
+            title='People excellence for new project',
             user=self.user
         )
-        recipe.tags.add(tag1)
+        memory.tags.add(tag1)
 
-        res = self.client.get(TAGS_URL, {'assigned_only': 1})
+        res = self.client.get(TAGS_URL, {'in_use': 1})
 
         serializer1 = TagSerializer(tag1)
         serializer2 = TagSerializer(tag2)
@@ -101,23 +99,19 @@ class PrivateTagsApiTests(TestCase):
 
     def test_retrieve_tags_assigned_unique(self):
         """Test filtering tags by assigned returns unique items"""
-        tag = Tag.objects.create(user=self.user, name='Breakfast')
-        Tag.objects.create(user=self.user, name='Lunch')
-        recipe1 = Recipe.objects.create(
-            title='Pancakes',
-            time_minutes=10,
-            price=5.00,
+        tag = Tag.objects.create(user=self.user, name='Spot Idea')
+        Tag.objects.create(user=self.user, name='Plan')
+        memory1 = Memory.objects.create(
+            title='Call Sam',
             user=self.user
         )
-        recipe1.tags.add(tag)
-        recipe2 = Recipe.objects.create(
-            title='Porridge',
-            time_minutes=10,
-            price=5.00,
+        memory1.tags.add(tag)
+        memory2 = Memory.objects.create(
+            title='Call Mike',
             user=self.user
         )
-        recipe2.tags.add(tag)
+        memory2.tags.add(tag)
 
-        res = self.client.get(TAGS_URL, {'assigned_only': 1})
+        res = self.client.get(TAGS_URL, {'in_use': 1})
 
         self.assertEqual(len(res.data), 1)

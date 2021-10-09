@@ -4,3 +4,5 @@ flake8
 psycopg2
 Pillow
 python-dotenv
+celery
+redis
