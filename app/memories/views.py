@@ -19,7 +19,7 @@ class BaseViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
     def get_queryset(self):
         """Return objects for the current authenticated user only"""
         in_use = bool(
-            int(self.request._params.get('in_use', 0))
+            int(self.request.query_params.get('in_use', 0))
         )
         queryset = self.queryset
         if in_use:
@@ -92,7 +92,7 @@ class MemoryViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """Create a new memories"""
-        serializer.save(user=self.request.user) 
+        serializer.save(user=self.request.user)
 
     @action(methods=('POST',), detail=True, url_path='upload-image')
     def upload_image(self, request, pk=None):
