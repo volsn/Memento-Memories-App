@@ -1,0 +1,752 @@
+{
+	"info": {
+		"_postman_id": "43d34b33-2f40-4463-a3da-ccb72539146f",
+		"name": "Memento",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"mykola.volosnikov@nure.ua\",\n    \"password\": 12345678,\n    \"name\": \"Nick\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/user/create/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"create",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"token\", pm.response.json()[\"token\"]);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"mykola.volosnikov@nure.ua\",\n    \"password\": 12345678\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/user/token/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"token",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/user/me/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"me",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"mykola.volosnikov@nure.ua\",\n    \"name\": \"New Nick\",\n    \"password\": 12345678\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/user/me/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"me",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Partial update user",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"memory_expiration\": \"01:00:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/user/me/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"me",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/user/me/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"me",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tag",
+			"item": [
+				{
+					"name": "List tags",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/memories/tags/?in_use=0",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"memories",
+								"tags",
+								""
+							],
+							"query": [
+								{
+									"key": "in_use",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create tag",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"tag_id\", pm.response.json()[\"id\"]);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Ideas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/memories/tags/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"memories",
+								"tags",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve tag",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/memories/tags/{{tag_id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"memories",
+								"tags",
+								"{{tag_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update tag",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Ideas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/memories/tags/{{tag_id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"memories",
+								"tags",
+								"{{tag_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove tag",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Ideas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/memories/tags/{{tag_id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"memories",
+								"tags",
+								"{{tag_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Domain",
+			"item": [
+				{
+					"name": "List domains",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/memories/domains/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"memories",
+								"domains",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create domain",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"domain_id\", pm.response.json()[\"id\"]);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Ideas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/memories/domains/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"memories",
+								"domains",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve domain",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/memories/domains/{{domain_id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"memories",
+								"domains",
+								"{{domain_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update domain",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Ideas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/memories/domains/{{domain_id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"memories",
+								"domains",
+								"{{domain_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove domain",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Ideas\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/memories/domains/{{domain_id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"memories",
+								"domains",
+								"{{domain_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Memory",
+			"item": [
+				{
+					"name": "List memories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/memories/memories",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"memories",
+								"memories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create memory",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"memory_id\", pm.response.json()[\"id\"]);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"New memory\",\n    \"text\": \"foo\",\n    \"domains\": [],\n    \"tags\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/memories/memories/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"memories",
+								"memories",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve memory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/memories/memories/{{memory_id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"memories",
+								"memories",
+								"{{memory_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Partial update memory",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tags\": [2]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/memories/memories/{{memory_id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"memories",
+								"memories",
+								"{{memory_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update memory",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/memories/memories/{{memory_id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"memories",
+								"memories",
+								"{{memory_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove memory",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/memories/memories/{{memory_id}}/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"memories",
+								"memories",
+								"{{memory_id}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload memory image",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/Users/vlsnk/Desktop/Фото-пьяного-с-бутылкой.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/memories/memories/{{memory_id}}/upload-image/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"memories",
+								"memories",
+								"{{memory_id}}",
+								"upload-image",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "Token {{token}}",
+				"type": "string"
+			},
+			{
+				"key": "in",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "localhost:8000"
+		},
+		{
+			"key": "memory_id",
+			"value": ""
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"key": "tag_id",
+			"value": ""
+		},
+		{
+			"key": "domain_id",
+			"value": ""
+		}
+	]
+}

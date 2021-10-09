@@ -1,0 +1,696 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "http://example.com",
+      "description": "",
+      "variables": {}
+    }
+  ],
+  "info": {
+    "version": "43d34b33-2f40-4463-a3da-ccb72539146f",
+    "title": "Memento",
+    "description": "",
+    "termsOfService": "",
+    "contact": {},
+    "license": {
+      "name": ""
+    }
+  },
+  "paths": {
+    "/api/user/create/": {
+      "post": {
+        "summary": "Create user",
+        "operationId": "Createuser",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string",
+                "example": {
+                  "email": "mykola.volosnikov@nure.ua",
+                  "password": 12345678,
+                  "name": "Nick"
+                }
+              },
+              "example": "{\n    \"email\": \"mykola.volosnikov@nure.ua\",\n    \"password\": 12345678,\n    \"name\": \"Nick\"\n}"
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/api/user/token/": {
+      "post": {
+        "summary": "Login",
+        "operationId": "Login",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string",
+                "example": {
+                  "email": "mykola.volosnikov@nure.ua",
+                  "password": 12345678
+                }
+              },
+              "example": "{\n    \"email\": \"mykola.volosnikov@nure.ua\",\n    \"password\": 12345678\n}"
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/api/user/me/": {
+      "get": {
+        "summary": "Retrieve user",
+        "operationId": "Retrieveuser",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      },
+      "put": {
+        "summary": "Update user",
+        "operationId": "Updateuser",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string",
+                "example": {
+                  "email": "mykola.volosnikov@nure.ua",
+                  "name": "New Nick",
+                  "password": 12345678
+                }
+              },
+              "example": "{\n    \"email\": \"mykola.volosnikov@nure.ua\",\n    \"name\": \"New Nick\",\n    \"password\": 12345678\n}"
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      },
+      "patch": {
+        "summary": "Partial update user",
+        "operationId": "Partialupdateuser",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string",
+                "example": {
+                  "memory_expiration": "01:00:00"
+                }
+              },
+              "example": "{\n    \"memory_expiration\": \"01:00:00\"\n}"
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      },
+      "delete": {
+        "summary": "Remove user",
+        "operationId": "Removeuser",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/api/memories/tags/": {
+      "get": {
+        "summary": "List tags",
+        "operationId": "Listtags",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/in_use"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "tags": [
+          "Tag"
+        ]
+      },
+      "post": {
+        "summary": "Create tag",
+        "operationId": "Createtag",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string",
+                "example": {
+                  "name": "Ideas"
+                }
+              },
+              "example": "{\n    \"name\": \"Ideas\"\n}"
+            }
+          }
+        },
+        "tags": [
+          "Tag"
+        ]
+      }
+    },
+    "/api/memories/tags/{tag_id}/": {
+      "get": {
+        "summary": "Retrieve tag",
+        "operationId": "Retrievetag",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/tag_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "tags": [
+          "Tag"
+        ]
+      },
+      "put": {
+        "summary": "Update tag",
+        "operationId": "Updatetag",
+        "parameters": [
+          {
+            "name": "tag_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "tag_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string",
+                "example": {
+                  "name": "New Ideas"
+                }
+              },
+              "example": "{\n    \"name\": \"New Ideas\"\n}"
+            }
+          }
+        },
+        "tags": [
+          "Tag"
+        ]
+      },
+      "delete": {
+        "summary": "Remove tag",
+        "operationId": "Removetag",
+        "parameters": [
+          {
+            "name": "tag_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "tag_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "tags": [
+          "Tag"
+        ]
+      }
+    },
+    "/api/memories/domains/": {
+      "get": {
+        "summary": "List domains",
+        "operationId": "Listdomains",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "tags": [
+          "Domain"
+        ]
+      },
+      "post": {
+        "summary": "Create domain",
+        "operationId": "Createdomain",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string",
+                "example": {
+                  "name": "Ideas"
+                }
+              },
+              "example": "{\n    \"name\": \"Ideas\"\n}"
+            }
+          }
+        },
+        "tags": [
+          "Domain"
+        ]
+      }
+    },
+    "/api/memories/domains/{domain_id}/": {
+      "get": {
+        "summary": "Retrieve domain",
+        "operationId": "Retrievedomain",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/domain_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "tags": [
+          "Domain"
+        ]
+      },
+      "put": {
+        "summary": "Update domain",
+        "operationId": "Updatedomain",
+        "parameters": [
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "domain_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string",
+                "example": {
+                  "name": "New Ideas"
+                }
+              },
+              "example": "{\n    \"name\": \"New Ideas\"\n}"
+            }
+          }
+        },
+        "tags": [
+          "Domain"
+        ]
+      },
+      "delete": {
+        "summary": "Remove domain",
+        "operationId": "Removedomain",
+        "parameters": [
+          {
+            "name": "domain_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "domain_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "tags": [
+          "Domain"
+        ]
+      }
+    },
+    "/api/memories/memories": {
+      "get": {
+        "summary": "List memories",
+        "operationId": "Listmemories",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "tags": [
+          "Memory"
+        ]
+      }
+    },
+    "/api/memories/memories/": {
+      "post": {
+        "summary": "Create memory",
+        "operationId": "Creatememory",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string",
+                "example": {
+                  "title": "New memory",
+                  "text": "foo",
+                  "domains": [],
+                  "tags": []
+                }
+              },
+              "example": "{\n    \"title\": \"New memory\",\n    \"text\": \"foo\",\n    \"domains\": [],\n    \"tags\": []\n}"
+            }
+          }
+        },
+        "tags": [
+          "Memory"
+        ]
+      }
+    },
+    "/api/memories/memories/{memory_id}/": {
+      "get": {
+        "summary": "Retrieve memory",
+        "operationId": "Retrievememory",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/memory_id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "tags": [
+          "Memory"
+        ]
+      },
+      "patch": {
+        "summary": "Partial update memory",
+        "operationId": "Partialupdatememory",
+        "parameters": [
+          {
+            "name": "memory_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "memory_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "string",
+                "example": {
+                  "tags": [
+                    2
+                  ]
+                }
+              },
+              "example": "{\n    \"tags\": [2]\n}"
+            }
+          }
+        },
+        "tags": [
+          "Memory"
+        ]
+      },
+      "put": {
+        "summary": "Update memory",
+        "operationId": "Updatememory",
+        "parameters": [
+          {
+            "name": "memory_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "memory_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "tags": [
+          "Memory"
+        ]
+      },
+      "delete": {
+        "summary": "Remove memory",
+        "operationId": "Removememory",
+        "parameters": [
+          {
+            "name": "memory_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "memory_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "tags": [
+          "Memory"
+        ]
+      }
+    },
+    "/api/memories/memories/{memory_id}/upload-image/": {
+      "post": {
+        "summary": "Upload memory image",
+        "operationId": "Uploadmemoryimage",
+        "parameters": [
+          {
+            "name": "memory_id",
+            "in": "path",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string",
+              "example": "memory_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "headers": {}
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "example": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": "/Users/vlsnk/Desktop/Фото-пьяного-с-бутылкой.jpg"
+                }
+              ]
+            }
+          }
+        },
+        "tags": [
+          "Memory"
+        ]
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "in_use": {
+        "name": "in_use",
+        "in": "query",
+        "required": true,
+        "style": "form",
+        "schema": {
+          "type": "number"
+        }
+      },
+      "tag_id": {
+        "name": "tag_id",
+        "in": "path",
+        "required": true,
+        "style": "simple",
+        "schema": {
+          "type": "string",
+          "example": "tag_id"
+        }
+      },
+      "domain_id": {
+        "name": "domain_id",
+        "in": "path",
+        "required": true,
+        "style": "simple",
+        "schema": {
+          "type": "string",
+          "example": "domain_id"
+        }
+      },
+      "memory_id": {
+        "name": "memory_id",
+        "in": "path",
+        "required": true,
+        "style": "simple",
+        "schema": {
+          "type": "string",
+          "example": "memory_id"
+        }
+      }
+    }
+  },
+  "security": [],
+  "tags": [],
+  "externalDocs": {
+    "url": "",
+    "description": ""
+  },
+  "warnings": []
+}
