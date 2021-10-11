@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.utils.timezone import make_aware
+from django.utils.translation import gettext as _
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
 from django.db import models
@@ -49,6 +50,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
 
+    class Meta:
+        verbose_name = _('user')
+        verbose_name_plural = _('users')
+
 
 class Domain(models.Model):
     """Domain to be used in a memory"""
@@ -61,6 +66,10 @@ class Domain(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = _('domain')
+        verbose_name_plural = _('domains')
+
 
 class Tag(models.Model):
     """Tags to be used in a memory"""
@@ -72,6 +81,10 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = _('tag')
+        verbose_name_plural = _('tags')
 
 
 class MemoryManager(models.Manager):
@@ -114,3 +127,8 @@ class Memory(models.Model):
         self.expiration = make_aware(datetime.now()) + self.user.\
             memory_expiration
         super(Memory, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = _('memory')
+        verbose_name_plural = _('memories')
+

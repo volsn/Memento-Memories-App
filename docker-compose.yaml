@@ -21,7 +21,6 @@ services:
       - DB_PASS=${DB_PASS}
       - SECRET_KEY=${SECRET_KEY}
       - DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
-      - DJANGO_TEST_SETTINGS=${DJANGO_TEST_SETTINGS}
 
   redis:
     image: redis:alpine
