@@ -124,7 +124,7 @@ class Memory(models.Model):
 
     def save(self, *args, **kwargs) -> None:
         """Override save method to add expiration datetime to object"""
-        self.expiration = make_aware(datetime.now()) + self.user.\
+        self.expiration = make_aware(datetime.now()) + self.user. \
             memory_expiration
         super(Memory, self).save(*args, **kwargs)
 
