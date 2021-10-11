@@ -12,6 +12,7 @@ Technologies used in this Project:
 - Celery
 - Redis
 - Docker-Compose
+- Gunicorn + Nginx
 - Flake8
 - Jenkins
 - Postman

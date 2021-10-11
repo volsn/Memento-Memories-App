@@ -8,6 +8,7 @@ services:
       - "8000:8000"
     volumes:
       - ./app:/app
+      - ./backend:/vol/web
     command: >
       sh -c "python manage.py wait_for_db && python manage.py migrate &&
         gunicorn app.wsgi --bind 0.0.0.0:8000"
@@ -42,6 +43,7 @@ services:
     depends_on:
       - redis
       - db
+      - app
 
   celery-beat:
     build:
@@ -60,6 +62,7 @@ services:
     depends_on:
       - redis
       - db
+      - app
 
   db:
     image: postgres:10-alpine

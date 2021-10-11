@@ -3,6 +3,7 @@ from celery.schedules import crontab
 from .base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
