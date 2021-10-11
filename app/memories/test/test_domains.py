@@ -45,19 +45,14 @@ class PrivateDomainsApiTests(TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res.data, serializer.data)
 
-    def test_domains_limited_to_user(self):
+    def test_default_domains_of_user(self):
         """Test that domains returned are for the authenticated user"""
-        user2 = get_user_model().objects.create_user(
-            email='other@mail.com',
-            password='testpass'
-        )
-        Domain.objects.create(user=user2, name='Friendship')
         domain = Domain.objects.create(user=self.user, name='Work')
 
         res = self.client.get(DOMAINS_URL)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(res.data), 1)
+        self.assertEqual(len(res.data), 9)  # 8 default + 1 created
         self.assertEqual(res.data[0]['name'], domain.name)
 
     def test_create_domain_successful(self):
