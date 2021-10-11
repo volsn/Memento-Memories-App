@@ -28,7 +28,7 @@ $ docker-compose up --build
 ___
 ## Populate
 
-App includes special manage command for populating database with fake data.
+App includes special manage command for populating database with fake data
 ```bash
 $ docker-compose exec app sh -c "python manage.py populate"
 ```

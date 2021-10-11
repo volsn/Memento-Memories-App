@@ -3,8 +3,9 @@ from typing import Any
 
 from faker import Faker
 from django.core.management.base import BaseCommand
+from django.contrib.auth.hashers import make_password
 
-from core.models import Tag, Domain, Memory, User
+from core.models import Tag, Domain, Memory, User, create_default_domains
 
 fake = Faker()
 
@@ -23,8 +24,12 @@ def generate_tags(user: User) -> None:
 def generate_memories(user: User, num: int = 50) -> None:
     """Generate fake memories"""
     for _ in range(num):
-        tags = Tag.objects.order_by('?')[:random.randint(1, 5)]
-        domains = Domain.objects.order_by('?')[:random.randint(1, 2)]
+        tags = Tag.objects.filter(
+            user=user
+        ).order_by('?')[:random.randint(1, 5)]
+        domains = Domain.objects.filter(
+            user=user
+        ).order_by('?')[:random.randint(1, 2)]
         memory = Memory(
             title=fake.sentence(),
             text=fake.text(512),
@@ -43,11 +48,12 @@ def generate_users(num: int = 100) -> None:
         user = User(
             email=profile['mail'],
             name=profile['name'],
-            password='123456'  # make_password(fake.password())
+            password=make_password('123456')
         )
         user.save()
-        generate_tags(user)
-        generate_memories(user)
+        generate_tags(user=user)
+        create_default_domains(user=user)
+        generate_memories(user=user)
 
 
 class Command(BaseCommand):
