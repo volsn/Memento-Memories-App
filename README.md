@@ -28,4 +28,17 @@ $ docker-compose up --build
 ___
 ## Populate
 
-App includes a [script](app/populate.py) for populating database with fake data.
+App includes special manage command for populating database with fake data.
+```bash
+$ docker-compose exec app sh -c "python manage.py populate"
+```
+
+___
+## Testing and Linting
+
+The project also comes with tests covering core functionality of the app.
+
+These can be run together with linter via following command
+```bash
+$ docker-compose exec app sh -c "python manage.py test --settings=settings.test && flake8"
+```
