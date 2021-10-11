@@ -8,9 +8,10 @@ from django.utils.translation import gettext as _
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
 from django.db import models
+from django.db.models.query import QuerySet
 
 
-def image_upload_file_path(_, filename):
+def image_upload_file_path(_, filename) -> str:
     """Generate file path for new memory image"""
     ext = filename.split('.')[-1]
     filename = f'{uuid.uuid4()}.{ext}'
@@ -20,7 +21,7 @@ def image_upload_file_path(_, filename):
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, email, password=None, **kwargs):
+    def create_user(self, email, password=None, **kwargs) -> 'User':
         """Creates and saves a new user"""
         if not email:
             raise ValueError('Users must have an email address')
@@ -29,7 +30,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password):
+    def create_superuser(self, email, password) -> 'User':
         """Creates and saves a new superuser"""
         user = self.create_user(email, password)
         user.is_superuser = True
@@ -90,14 +91,14 @@ class Tag(models.Model):
 class MemoryManager(models.Manager):
     """Override model manager for memory class"""
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         """Only return memories that have not expired"""
         return super(MemoryManager, self).get_queryset() \
             .filter(expiration__gte=datetime.now())
 
     def delete_expired_objects(self) -> None:
         """Method to remove memories that have expired"""
-        return super(MemoryManager, self).get_queryset() \
+        super(MemoryManager, self).get_queryset() \
             .filter(expiration__lte=datetime.now()).delete()
 
 

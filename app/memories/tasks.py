@@ -4,6 +4,6 @@ from core.models import Memory
 
 
 @shared_task
-def delete_expired_memories():
+def delete_expired_memories() -> None:
     """Delete memories that have expired"""
     Memory.objects.delete_expired_objects()

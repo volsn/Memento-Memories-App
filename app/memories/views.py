@@ -1,6 +1,11 @@
+from typing import List, Type, Any, Optional
+
+from django.db.models.query import QuerySet
 from django.utils.translation import gettext as _
 from rest_framework.decorators import action
+from rest_framework.serializers import BaseSerializer
 from rest_framework.response import Response
+from rest_framework.request import Request
 from rest_framework import viewsets, mixins, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
@@ -16,7 +21,7 @@ class BaseViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated,)
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         """Return objects for the current authenticated user only"""
         in_use = bool(
             int(self.request.query_params.get('in_use', 0))
@@ -29,11 +34,11 @@ class BaseViewSet(viewsets.GenericViewSet, mixins.ListModelMixin,
             user=self.request.user
         ).order_by('-name').distinct()
 
-    def perform_create(self, serializer):
+    def perform_create(self, serializer: BaseSerializer) -> None:
         """Create a new object"""
         serializer.save(user=self.request.user)
 
-    def destroy(self, request, *args, **kwargs):
+    def destroy(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         """Override destroy method to return message response"""
         instance: BaseViewSet = self.get_object()
         self.perform_destroy(instance)
@@ -61,11 +66,11 @@ class MemoryViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
 
     @staticmethod
-    def _query_to_list(params):
+    def _query_to_list(params: str) -> List:
         """Convert a list of string IDs to a list of integers"""
         return [int(param) for param in params.split(',')]
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         """Limit objects to the authenticated user"""
         queryset = self.queryset
 
@@ -81,7 +86,7 @@ class MemoryViewSet(viewsets.ModelViewSet):
 
         return queryset.filter(user=self.request.user)
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Type[BaseSerializer]:
         """Return appropriate serializer class"""
         if self.action == 'retrieve':
             return serializers.MemoryDetailSerializer
@@ -90,12 +95,13 @@ class MemoryViewSet(viewsets.ModelViewSet):
 
         return self.serializer_class
 
-    def perform_create(self, serializer):
+    def perform_create(self, serializer: BaseSerializer) -> None:
         """Create a new memories"""
         serializer.save(user=self.request.user)
 
     @action(methods=('POST',), detail=True, url_path='upload-image')
-    def upload_image(self, request, pk=None):
+    def upload_image(self, request: Request, pk: Optional[int] = None)\
+            -> Response:
         """upload an image to a memory"""
         memory = self.get_object()
         serializer = self.get_serializer(
@@ -115,7 +121,7 @@ class MemoryViewSet(viewsets.ModelViewSet):
             status=status.HTTP_400_BAD_REQUEST
         )
 
-    def destroy(self, request, *args, **kwargs):
+    def destroy(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         """Override delete method to return message response"""
         instance: Memory = self.get_object()
         self.perform_destroy(instance)
