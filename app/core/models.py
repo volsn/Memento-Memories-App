@@ -131,4 +131,3 @@ class Memory(models.Model):
     class Meta:
         verbose_name = _('memory')
         verbose_name_plural = _('memories')
-
